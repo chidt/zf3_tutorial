@@ -1,0 +1,62 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Chi-DT
+ * Date: 12/06/2017
+ * Time: 14:51
+ */
+$form = $this->form;
+$isLoginError = $this->isLoginError;
+$title = 'Sign in';
+
+$this->headTitle($title);
+
+$username = $form->get('username');
+$username->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'User name',
+    'required' => true,
+    'autofocus' => true
+]);
+
+$password = $form->get('password');
+$password->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Password',
+    'required' => true
+]);
+
+$remember = $form->get('remember_me');
+
+$submit = $form->get('submit');
+$submit->setAttribute('class', 'btn btn-lg btn-primary btn-block');
+
+$form->setAttribute('action', $this->url('login', ['action' => 'login']));
+$form->prepare();
+echo $this->form()->openTag($form);
+?>
+
+<div class="row">
+    <div class="col-md-offset-4 col-md-3">
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <?php if ($isLoginError): ?>
+                <div class="alert alert-warning" role="alert">
+                    Incorrect login and/or password.
+                    <a href="<?= $this->url('login') ?>">Forgot password?</a>
+                </div>
+            <?php endif; ?>
+            <?= $this->formLabel($username); ?>
+            <?= $this->formElement($username); ?>
+            <?= $this->formLabel($password); ?>
+            <?= $this->formElement($password); ?>
+            <div class="checkbox">
+                <label>
+                    <?= $this->formElement($remember); ?> Remember me
+                </label>
+            </div>
+            <?php echo $this->formSubmit($submit);?>
+    </div>
+</div>
+<?php echo $this->form()->closeTag();?>
+
+
