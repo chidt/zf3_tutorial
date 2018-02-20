@@ -1,16 +1,18 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: Chi-DT
- * Date: 13/06/2017
- * Time: 09:18
+ * Date: 05/10/2017
+ * Time: 17:44
  */
+
 namespace User\Form;
 
+
 use Zend\Form\Element\Checkbox;
-use Zend\Form\Element\Password;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
+use Zend\Form\Element\Password;
 
 class LoginForm extends Form
 {
@@ -20,9 +22,9 @@ class LoginForm extends Form
 
         $this->add([
             'name' => 'username',
-            'type' => 'text',
+            'type' => Text::class,
             'options' => [
-                'label' => 'Username'
+                'label' => 'Email'
             ]
         ]);
 
@@ -35,19 +37,19 @@ class LoginForm extends Form
         ]);
 
         $this->add([
-            'name' => 'remember_me',
+            'name' => 'remember',
             'type' => Checkbox::class,
             'options' => [
-                'label' => 'Remember me']
+                'label' => 'Remember me'
+            ]
         ]);
 
         $this->add([
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => [
-                'value' => 'Sign in'
+                'value' => 'Login'
             ]
         ]);
     }
-
 }

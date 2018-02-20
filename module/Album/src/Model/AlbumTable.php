@@ -37,7 +37,7 @@ class AlbumTable
     {
         // Create a new select object for the table:
         $select = new Select($this->tableGateway->getTable());
-
+        $select->order('id');
         // Create a new result set based on the Album entity:
         $resultSetPrototype = new ResultSet();
         $resultSetPrototype->setArrayObjectPrototype(new Album());

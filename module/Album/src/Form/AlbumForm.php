@@ -13,18 +13,19 @@ use Zend\Form\Form;
 
 class AlbumForm extends Form
 {
-    public function __construct($name = null)
+    private $confirmed = false;
+
+    public function __construct($name = null,$confirm = false)
     {
         parent::__construct('album');
-
+        $this->confirmed = $confirm;
         $this->add([
             'name' => 'id',
             'type' => 'hidden',
         ]);
-
         $this->add([
             'name' => 'title',
-            'type' => 'text',
+            'type' => $this->confirmed ? 'hidden' : 'text',
             'options' => [
                 'label' => 'Title'
             ],
@@ -32,7 +33,7 @@ class AlbumForm extends Form
 
         $this->add([
             'name' => 'artist',
-            'type' => 'text',
+            'type' => $this->confirmed ? 'hidden' : 'text',
             'options' => [
                 'label' => 'Artist'
             ]
@@ -46,6 +47,14 @@ class AlbumForm extends Form
                 'id' => 'submitbutton'
             ]
         ]);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConfirmed()
+    {
+        return $this->confirmed;
     }
 
 }

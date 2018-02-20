@@ -1,0 +1,63 @@
+<?php
+$form = $this->form;
+$isLoginError = $this->isLoginError;
+$title = 'Login';
+$this->headTitle($title);
+
+$email = $form->get('username');
+$email->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Username',
+    'required' => true,
+    'autofocus' => true
+]);
+
+$password = $form->get('password');
+$password->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Password',
+    'required' => true
+]);
+
+$remember = $form->get('remember');
+
+$submit = $form->get('submit');
+$submit->setAttributes([
+    'class' => 'btn btn-custom btn-lg btn-block'
+]);
+
+$form->setAttribute('action', $this->url('login'));
+$form->prepare();
+
+?>
+<section id="login">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-wrap">
+                    <h1>Login</h1>
+                    <?php if ($isLoginError): ?>
+                        <div class="alert alert-warning" role="alert">
+                            メールアドレス、または、パスワードが正しくありません。
+                        </div>
+                    <?php endif; ?>
+                    <?php echo $this->form()->openTag($form); ?>
+                    <div class="form-group">
+                        <?= $this->formElement($email); ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $this->formElement($password); ?>
+                    </div>
+                    <div class="form-group">
+                        <label><?= $this->formElement($remember)?> Remember me
+                        </label>
+                    </div>
+                    <?php echo $this->formSubmit($submit);?>
+                    <?php echo $this->form()->closeTag(); ?>
+
+                </div>
+            </div> <!-- /.col-xs-12 -->
+        </div> <!-- /.row -->
+    </div> <!-- /.container -->
+</section>
+

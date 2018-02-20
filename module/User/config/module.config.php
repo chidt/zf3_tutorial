@@ -1,46 +1,54 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Chi-DT
- * Date: 12/06/2017
- * Time: 11:22
- */
 namespace User;
-use User\Factory\AuthControllerFactory;
-use Zend\Router\Http\Literal;
-use Zend\ServiceManager\Factory\InvokableFactory;
 
+use User\Factory\AuthenticationServiceFactory;
+use User\Factory\UserAuthenticationControllerFactory;
+use Zend\Authentication\AuthenticationService;
 
 return [
     'service_manager' => [
         'factories' => [
-            \Zend\Authentication\AuthenticationService::class => \User\Factory\AuthenticationServiceFactory::class
+            AuthenticationService::class => AuthenticationServiceFactory::class
         ]
     ],
     'controllers' => [
         'factories' => [
-            Controller\AuthController::class => AuthControllerFactory::class
-//            Controller\AuthController::class => InvokableFactory::class
-        ]
+            Controller\UserAuthenticationController::class => UserAuthenticationControllerFactory::class,
+        ],
     ],
     'router' => [
         'routes' => [
             'login' => [
-                'type' => Literal::class,
+                'type'    => 'Literal',
                 'options' => [
-                    'route' => '/login',
+                    // Change this to something specific to your module
+                    'route'    => '/login',
                     'defaults' => [
-                        'controller' => Controller\AuthController::class,
-                        'action' => 'login'
-                    ]
-                ]
-            ]
-        ]
+                        'controller'    => Controller\UserAuthenticationController::class,
+                        'action'        => 'login',
+                    ],
+                ],
+            ],
+            'logout' => [
+                'type'    => 'Literal',
+                'options' => [
+                    // Change this to something specific to your module
+                    'route'    => '/logout',
+                    'defaults' => [
+                        'controller'    => Controller\UserAuthenticationController::class,
+                        'action'        => 'logout',
+                    ],
+                ],
+            ],
+        ],
     ],
-
     'view_manager' => [
         'template_path_stack' => [
-            __DIR__ . '/../view',
+            'ZendSkeletonModule' => __DIR__ . '/../view',
         ],
+    ],
+    //Use community zend-layout-change plugin, change layout per module
+    'module_layouts' => [
+        'User' => 'layout/login-layout',
     ],
 ];

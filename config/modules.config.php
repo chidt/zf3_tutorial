@@ -24,5 +24,7 @@ return [
     'Application',
     'Album',
     'Blog',
-    'User'
+    'User',
+    'LayoutChange',
+
 ];

@@ -38,14 +38,19 @@
             </a>
         </div>
         <div class="collapse navbar-collapse">
-<!--            --><?php //echo $this->navigation('navigation')->menu()// Other way: ?>
             <?= $this->navigation('navigation')
-                -> menu()
-                -> setMinDepth(0)
-                -> setMaxDepth(0)
-                -> setUlClass ('nav navbar-nav')
+                ->menu()
+                ->setMinDepth(0)
+                ->setMaxDepth(0)
+                ->setUlClass('nav navbar-nav')
             ?>
+            <?php $user = $this->identity(); ?>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> <?= $user->username?></a></li>
+                <li><a href="<?= $this->url('logout')?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
         </div>
+
     </div>
 </nav>
 <div class="container">
@@ -54,6 +59,7 @@
         ->setMinDepth(0)
         ->setPartial('partial/breadcrumb')
     ?>
+
     <?= $this->content ?>
     <hr>
     <footer>

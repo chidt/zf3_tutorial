@@ -10,6 +10,7 @@
  * control, so do not include passwords or other sensitive information in this
  * file.
  */
+use Zend\Session\Storage\SessionArrayStorage;
 
 return [
     'db' => [
@@ -23,5 +24,9 @@ return [
         'factories' => [
             'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
         ]
+    ],
+    // Session storage configuration.
+    'session_storage' => [
+        'type' => SessionArrayStorage::class
     ]
 ];

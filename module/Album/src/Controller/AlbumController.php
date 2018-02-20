@@ -8,6 +8,7 @@
 
 namespace Album\Controller;
 
+use Album\Form\AlbumConfirmForm;
 use Album\Form\AlbumForm;
 use Album\Model\AlbumTable;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -31,7 +32,7 @@ class AlbumController extends AbstractActionController
 
         // Set the current page to what has been passed in query string
         // or to 1 if none is set, or the page is invalid:
-        $page = (int) $this->params()->fromQuery('page',1);
+        $page = (int)$this->params()->fromQuery('page', 1);
         $page = ($page < 1) ? 1 : $page;
         $paginator->setCurrentPageNumber($page);
 
@@ -43,26 +44,43 @@ class AlbumController extends AbstractActionController
     public function addAction()
     {
         $form = new AlbumForm();
-        $form->get('submit')->setValue('Add');
-
+        $form->get('submit')->setValue('Confirm');
+        $view = new ViewModel(['form' => $form]);
         $request = $this->getRequest();
+        if ($request->isPost()) {
+            $album = new Album();
+            $form->setInputFilter($album->getInputFilter());
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $album->exchangeArray($form->getData());
+                $formConfrim = new AlbumForm('',true);
+                $formConfrim->bind($album);
+                $view = new ViewModel(['form' => $formConfrim]);
+                return $view;
+            } else {
+                return $view;
+            }
 
-        if (!$request->isPost()) {
-            return ['form' => $form];
+        } else {
+            return $view;
         }
+    }
 
-        $album = new Album();
-        $form->setInputFilter($album->getInputFilter());
-        $form->setData($request->getPost());
-
-        if (!$form->isValid()) {
-            return ['form' => $form];
+    public function confirmAction()
+    {
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $confirmForm = new AlbumForm();
+            $album = new Album();
+            $confirmForm->setInputFilter($album->getInputFilter());
+            $confirmForm->setData($request->getPost());
+            if ($confirmForm->isValid()) {
+                return $this->redirect()->toRoute('album');
+            }
+            $album->exchangeArray($confirmForm->getData());
+            $this->table->saveAlbum($album);
         }
-
-        $album->exchangeArray($form->getData());
-        $this->table->saveAlbum($album);
         return $this->redirect()->toRoute('album');
-
     }
 
     public function editAction()
@@ -85,35 +103,35 @@ class AlbumController extends AbstractActionController
         $request = $this->getRequest();
         $viewData = ['id' => $id, 'form' => $form];
 
-        if(! $request->isPost()){
+        if (!$request->isPost()) {
             return $viewData;
         }
 
         $form->setInputFilter($album->getInputFIlter());
         $form->setData($request->getPost());
 
-        if(! $form->isValid()){
+        if (!$form->isValid()) {
             return $viewData;
         }
 
         $this->table->saveAlbum($album);
 
-        return $this->redirect()->toRoute('album',['action'=>'index']);
+        return $this->redirect()->toRoute('album', ['action' => 'index']);
     }
 
     public function deleteAction()
     {
-        $id = (int) $this->params()->fromRoute('id',0);
-        if(!$id){
+        $id = (int)$this->params()->fromRoute('id', 0);
+        if (!$id) {
             return $this->redirect()->toRoute('album');
         }
 
         $request = $this->getRequest();
-        if($request->isPost()){
-            $del = $request->getPost('del','No');
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
 
-            if($del == 'Yes'){
-                $id = (int) $request->getPost('id');
+            if ($del == 'Yes') {
+                $id = (int)$request->getPost('id');
                 $this->table->deleteAlbum($id);
             }
 

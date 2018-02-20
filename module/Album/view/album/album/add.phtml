@@ -1,9 +1,7 @@
 <?php
 $title = 'Add new album';
 $this->headTitle($title);
-?>
-    <h1><?= $this->escapeHtml($title) ?></h1>
-<?php
+$form = $this->form;
 // This provides a default CSS class and placeholder text for the title element:
 $album = $form->get('title');
 $album->setAttribute('class', 'form-control');
@@ -19,6 +17,13 @@ $submit = $form->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');
 
 $form->setAttribute('action', $this->url('album', ['action' => 'add']));
+?>
+
+<?php $confirm = $form->isConfirmed();
+if(!$confirm):
+?>
+    <h1><?= $this->escapeHtml($title) ?></h1>
+<?php
 $form->prepare();
 
 echo $this->form()->openTag($form);
@@ -26,9 +31,9 @@ echo $this->form()->openTag($form);
 <?php // Wrap the elements in divs marked as form groups, and render the
 // label, element, and errors separately within ?>
     <div class="form-group">
-        <?= $this->formLabel($album) ?>
-        <?= $this->formElement($album) ?>
-        <?= $this->formElementErrors()->render($album, ['class' => 'help-block']) ?>
+            <?= $this->formLabel($album) ?>
+            <?= $this->formElement($album) ?>
+            <?= $this->formElementErrors()->render($album, ['class' => 'help-block']) ?>
     </div>
 
     <div class="form-group">
@@ -41,3 +46,22 @@ echo $this->form()->openTag($form);
 echo $this->formSubmit($submit);
 echo $this->formHidden($form->get('id'));
 echo $this->form()->closeTag();
+else:?>
+    <?php
+    $title = 'Confirm Form';
+    $this->headTitle($title);
+    $form->setAttribute('action', $this->url('album', ['action' => 'confirm']));
+    ?>
+    <h2>Confirm form</h2>
+    <h3>Title:<?php var_dump($title)?></h3>
+    <h3>Artist:<?php var_dump($artist)?></h3>
+    <?php $form->prepare();
+    echo $this->form()->openTag($form);
+    ?>
+    <?= $this->formElement($album) ?>
+    <?= $this->formElement($artist) ?>
+    <a class="btn btn-danger" onclick="window.history.back()">Go Back</a>
+    <?php
+    echo $this->formSubmit($submit);
+    echo $this->form()->closeTag();?>
+<?php endif;?>

@@ -42,7 +42,7 @@ class WriteController extends AbstractActionController
         PostCommandInterface $command,
         PostForm $form,
         PostRepositoryInterface $repository
-)
+    )
     {
         $this->command = $command;
         $this->form = $form;
@@ -54,13 +54,13 @@ class WriteController extends AbstractActionController
         $request = $this->getRequest();
         $viewModel = new ViewModel(['form' => $this->form]);
 
-        if(! $request->isPost()){
+        if (!$request->isPost()) {
             return $viewModel;
         }
 
         $this->form->setData($request->getPost());
 
-        if(! $this->form->isValid()){
+        if (!$this->form->isValid()) {
             return $viewModel;
         }
 
@@ -69,9 +69,9 @@ class WriteController extends AbstractActionController
 
         $post = $this->form->getData();
 
-        try{
+        try {
             $post = $this->command->insertPost($post);
-        }catch (\Exception $ex){
+        } catch (\Exception $ex) {
             throw $ex;
         }
 
@@ -81,15 +81,16 @@ class WriteController extends AbstractActionController
         );
     }
 
-    public function editAction(){
+    public function editAction()
+    {
         $id = $this->params()->fromRoute('id');
-        if(!$id){
+        if (!$id) {
             return $this->redirect()->toRoute('blog');
         }
 
-        try{
+        try {
             $post = $this->repository->findPost($id);
-        }catch (InvalidArgumentException $ex){
+        } catch (InvalidArgumentException $ex) {
             return $this->redirect()->toRoute('blog');
         }
 
@@ -97,13 +98,13 @@ class WriteController extends AbstractActionController
         $viewModel = new ViewModel(['form' => $this->form]);
 
         $request = $this->getRequest();
-        if(! $request->isPost()){
+        if (!$request->isPost()) {
             return $viewModel;
         }
 
         $this->form->setData($request->getPost());
 
-        if(! $this->form->isValid()){
+        if (!$this->form->isValid()) {
             return $viewModel;
         }
 
