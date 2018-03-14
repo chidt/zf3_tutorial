@@ -62,7 +62,8 @@ return [
         'default' => [
             [
                 'label' => 'Home',
-                'route' => 'home'
+                'route' => 'home',
+                'resource' => 'index'
             ],
             [
                 'label' => 'Album',
@@ -71,15 +72,18 @@ return [
                     [
                         'label' => 'Add',
                         'route' => 'album',
+                        'resource' => 'album',
                         'action' => 'add',
                     ],
                     [
                         'label' => 'Edit',
                         'route' => 'album',
+                        'resource' => 'album',
                         'action' => 'edit',
                     ],
                     [
                         'label' => 'Delete',
+                        'resource' => 'album',
                         'route' => 'album',
                         'action' => 'delete'
                     ],
@@ -87,20 +91,30 @@ return [
             ],
             [
                 'label' => 'Blog',
+                'resource' => 'blog',
                 'route' => 'blog',
                 'pages' => [
                     [
                         'label' => 'Add',
+                        'resource' => 'blog/add',
                         'route' => 'blog/add',
                         'action' => 'add',
                     ],
                     [
+                        'label' => 'Detail',
+                        'resource' => 'blog/detail',
+                        'route' => 'blog/detail',
+                        'action' => 'detail',
+                    ],
+                    [
                         'label' => 'Edit',
+                        'resource' => 'blog/edit',
                         'route' => 'blog/edit',
                         'action' => 'edit',
                     ],
                     [
                         'label' => 'Delete',
+                        'resource' => 'blog/delete',
                         'route' => 'blog/delete',
                         'action' => 'delete'
                     ],

@@ -12,6 +12,7 @@ use Album\Form\AlbumConfirmForm;
 use Album\Form\AlbumForm;
 use Album\Model\AlbumTable;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Permissions\Acl\Acl;
 use Zend\View\Model\ViewModel;
 use Album\Model\Album;
 
@@ -19,6 +20,7 @@ class AlbumController extends AbstractActionController
 {
 
     private $table;
+
 
     public function __construct(AlbumTable $table)
     {
@@ -53,7 +55,7 @@ class AlbumController extends AbstractActionController
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $album->exchangeArray($form->getData());
-                $formConfrim = new AlbumForm('',true);
+                $formConfrim = new AlbumForm('', true);
                 $formConfrim->bind($album);
                 $view = new ViewModel(['form' => $formConfrim]);
                 return $view;

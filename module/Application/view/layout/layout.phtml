@@ -1,4 +1,10 @@
 <?= $this->doctype() ?>
+<?php
+//$acl = $this->getView()->layout()->acl;
+//var_dump($acl);
+$acl = $this->acl;
+$user = $this->identity();
+?>
 
 <html lang="en">
 <head>
@@ -37,20 +43,22 @@
                      alt="Zend Framework <?= \Application\Module::VERSION ?>"/>&nbsp;Skeleton Application
             </a>
         </div>
+        <?php if($user):?>
         <div class="collapse navbar-collapse">
             <?= $this->navigation('navigation')
                 ->menu()
                 ->setMinDepth(0)
                 ->setMaxDepth(0)
                 ->setUlClass('nav navbar-nav')
+                ->setAcl($acl)->setRole($user->role)
+
             ?>
-            <?php $user = $this->identity(); ?>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-user"></span> <?= $user->username?></a></li>
                 <li><a href="<?= $this->url('logout')?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
         </div>
-
+        <?php endif;?>
     </div>
 </nav>
 <div class="container">
